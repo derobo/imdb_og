@@ -62,33 +62,6 @@ class ImdbTest < Test::Unit::TestCase
     end
   end
   
-  context "when searching with exact match" do
-    setup do
-      @results = Imdb.search_movies_by_title('A Fish Called Wanda')
-    end
-    
-    should "return an array of results" do
-      assert_equal Array, @results.class
-    end
-
-    should "return an array of hashes" do
-      assert_equal Hash, @results.first.class
-    end
-
-    should "return an array of hashes with the right keys" do
-      assert @results.first.has_key?(:title)
-      assert @results.first.has_key?(:imdb_id)
-    end
-    
-    should "return only one id if exact match" do
-      assert_equal 1, @results.size
-    end
-    
-    should "return the right id" do
-      assert_equal "tt0095159", @results.first[:imdb_id]
-    end
-  end
-
   context "ImdbMovie" do
     context "when first created" do
       should "not have an imdb_id" do
