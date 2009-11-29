@@ -30,6 +30,16 @@ class ImdbTest < Test::Unit::TestCase
     
   end
   
+  context "when searching with akas" do
+    setup do
+      @results = Imdb.search_movies_by_title('Eine Weihnachtsgeschichte', true)
+    end
+    
+    should "return an 'A Fish Called Wanda' id " do
+      assert_equal "tt1067106", @results.reject {|r| r[:imdb_id] != "tt1067106" }.first[:imdb_id]  
+    end
+  end
+  
   context "when searching with exact match" do
     setup do
       @results = Imdb.search_movies_by_title('A Fish Called Wanda')
