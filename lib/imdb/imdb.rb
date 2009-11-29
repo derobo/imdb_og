@@ -18,8 +18,8 @@ class Imdb
     end
     results.uniq
   end
-
-  def self.find_movie_by_id(id)
+  
+  def self.find_movie_by_id(id, fetch_releaseinfos = false)
     coder = HTMLEntities.new
 
     data = Hpricot(open(IMDB_MOVIE_BASE_URL + id))
@@ -91,14 +91,38 @@ class Imdb
         actor_name = coder.decode((cast_member/"td.nm"/"a").inner_text)
         actor_role = coder.decode((cast_member/"td.char").inner_text)
         movie.actors = movie.actors << ImdbName.new(actor_id, actor_name, actor_role)
-    end
-
+    end    
+    self.parse_releaseinfo(id, movie) if fetch_releaseinfos
     movie # return movie
 
   end
 
 
   protected
+
+  def self.parse_releaseinfo(id, movie)
+    coder = HTMLEntities.new
+    data = Hpricot(open(IMDB_MOVIE_BASE_URL + id + '/releaseinfo'))
+    infos = data/"div#tn15content/table"
+    movie.releases = self.parse_releaseinfo_table(infos.first/"tr").map {|array| self.parse_releaseinfo_entry(array) }.compact
+    movie.akas = self.parse_releaseinfo_table(infos[1]/"tr").map do |arr| {:title => arr[0], :countries => arr[1].split(" / ")} end
+  end
+  
+  def self.parse_releaseinfo_entry(array)
+    return nil unless array.size > 1
+    begin
+      if (array[1] =~ /(\d{1,2}) ([a-zA-Z]+) (\d{4})/)
+        release_date = Date.parse("#{$2} #{$1}, #{$3}")
+      end
+    rescue
+      release_date = nil
+    end
+    {:country => array[0], :release => release_date, :note => array[2]}
+  end
+  
+  def self.parse_releaseinfo_table(tr_elements)
+    tr_elements.map do |tr| tr.inner_text.split("\n").map {|s| s.strip unless s.strip == ""}.compact end
+  end
   
   def self.parse_info(info)
     value = info.inner_text.gsub(/\n/,'') 
