@@ -108,11 +108,22 @@ class Imdb
     data = Hpricot(open(IMDB_MOVIE_BASE_URL + id + '/releaseinfo'))
     infos = data/"div#tn15content/table"
     movie.releases = self.parse_releaseinfo_table(infos.first/"tr").map {|array| self.parse_releaseinfo_entry(array) }.compact
-    movie.akas = self.parse_releaseinfo_table(infos[1]/"tr").map do |arr| {:title => arr[0], :countries => arr[1].split(" / ")} end
+    self.parse_releaseinfo_table(infos[1]/"tr").each do |arr|
+      arr[1].split(" / ").each {|s|
+        a = s.split(" (") # If a note like (working title) or (english title)
+        a[1].gsub!(')','') if a[1]
+        movie.releases.each{|r|
+          if r.country == a[0] && !r.title  # prevents muliple titles
+            r.title = arr[0] 
+            r.note = a[1] if a[1]
+          end
+        }
+      }
+    end    
   end
   
   def self.parse_releaseinfo_entry(array)
-    return nil unless array.size > 1
+    return nil unless array.size == 2
     begin
       if (array[1] =~ /(\d{1,2}) ([a-zA-Z]+) (\d{4})/)
         release_date = Date.parse("#{$2} #{$1}, #{$3}")
@@ -120,7 +131,7 @@ class Imdb
     rescue
       release_date = nil
     end
-    {:country => array[0], :release => release_date, :note => array[2]}
+    ImdbRelease.new(array[0], release_date)
   end
   
   def self.parse_releaseinfo_table(tr_elements)
@@ -162,6 +173,4 @@ class Imdb
       ImdbGenre.new(coder.decode($1), coder.decode($1))
     end
   end
-
-  
 end

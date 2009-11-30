@@ -173,6 +173,20 @@ class ImdbTest < Test::Unit::TestCase
         assert_equal [], @movie.genres
       end
     end
+    context "after an Imdb.find_by_id with release fetching returns it" do 
+      setup do
+        @movie = Imdb.find_movie_by_id('tt0382932', true)
+      end
+      
+      should "have releases" do
+        assert_equal 53, @movie.releases.size
+        assert_equal 'Chile', @movie.releases.first.country
+        assert_equal Date.new(2007, 6, 28), @movie.releases.first.date
+        assert_equal 'Sweden', @movie.releases.last.country
+        assert_equal Date.new(2007, 10, 19), @movie.releases.last.date
+        assert_equal 'R&#xE5;ttatouille', @movie.releases.last.title
+      end
+    end
     
   end
   
