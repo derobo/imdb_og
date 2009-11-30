@@ -18,6 +18,6 @@ class ImdbMovie
   end
   
   def releases
-    self.instance_variable_get(:@releases) || []
+    self.instance_variable_get(:@releases) || {}
   end
 end

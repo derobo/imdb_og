@@ -107,35 +107,21 @@ class Imdb
     coder = HTMLEntities.new
     data = Hpricot(open(IMDB_MOVIE_BASE_URL + id + '/releaseinfo'))
     infos = data/"div#tn15content/table"
-    movie.releases = self.parse_releaseinfo_table(infos.first/"tr").map {|array| self.parse_releaseinfo_entry(array) }.compact
-    self.parse_releaseinfo_table(infos[1]/"tr").each do |arr|
-      arr[1].split(" / ").each {|s|
-        a = s.split(" (") # If a note like (working title) or (english title)
-        a[1].gsub!(')','') if a[1]
-        movie.releases.each{|r|
-          if r.country == a[0] && !r.title  # prevents muliple titles
-            r.title = arr[0] 
-            r.note = a[1] if a[1]
-          end
-        }
-      }
-    end    
-  end
-  
-  def self.parse_releaseinfo_entry(array)
-    return nil unless array.size == 2
-    begin
-      if (array[1] =~ /(\d{1,2}) ([a-zA-Z]+) (\d{4})/)
-        release_date = Date.parse("#{$2} #{$1}, #{$3}")
+    
+    dates = (infos.first/'tr').map do |e| e.inner_text.squeeze(' ').gsub("\n \n", "\n").strip.split("\n ") end.compact.reject{|a| true if a.size != 2}
+    
+    titles = (infos[1]/"tr").map {|e| e.inner_text.strip.split("\n\n")}.map{|a| a[1].split(" / ").map{|c| {:country => coder.decode(c), :title => coder.decode(a[0])} }}.flatten
+    
+    movie.releases = {}
+    dates.each do |d|
+      title = titles.reject{|t| t[:country] != d[0] }
+      begin
+        release_date = Date.parse("#{$2} #{$1}, #{$3}") if (d[1] =~ /(\d{1,2}) ([a-zA-Z]+) (\d{4})/)
+      rescue
+        release_date = nil
       end
-    rescue
-      release_date = nil
+      movie.releases[d[0]] = {:date => release_date, :title => title.size > 0 ? title.first[:title] : movie.title }
     end
-    ImdbRelease.new(array[0], release_date)
-  end
-  
-  def self.parse_releaseinfo_table(tr_elements)
-    tr_elements.map do |tr| tr.inner_text.split("\n").map {|s| s.strip unless s.strip == ""}.compact end
   end
   
   def self.parse_info(info)

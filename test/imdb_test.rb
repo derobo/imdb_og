@@ -180,11 +180,14 @@ class ImdbTest < Test::Unit::TestCase
       
       should "have releases" do
         assert_equal 53, @movie.releases.size
-        assert_equal 'Chile', @movie.releases.first.country
-        assert_equal Date.new(2007, 6, 28), @movie.releases.first.date
-        assert_equal 'Sweden', @movie.releases.last.country
-        assert_equal Date.new(2007, 10, 19), @movie.releases.last.date
-        assert_equal 'R&#xE5;ttatouille', @movie.releases.last.title
+        assert_equal 'UK', @movie.releases.keys.first
+        assert_equal Date.new(2007, 10, 12), @movie.releases['UK'][:date]
+        assert_equal 'Ratatouille', @movie.releases['UK'][:title]
+        assert_equal 'Taiwan', @movie.releases.keys.last
+        assert_equal Date.new(2007, 8, 3), @movie.releases['Taiwan'][:date]
+        assert_equal 'Ratatouille', @movie.releases['Taiwan'][:title]
+        assert_equal Date.new(2007, 10, 19), @movie.releases['Poland'][:date]
+        assert_equal 'Ratatuj', @movie.releases['Poland'][:title]
       end
     end
     
