@@ -36,17 +36,17 @@ class ImdbTest < Test::Unit::TestCase
       end
     
       should "return a single hash of the exact result" do
-        assert_equal Hash, @result.class
+        assert_equal Hash, @result.first.class
       end
     
       should "return an the correct movie title" do
-        assert @result.has_key?(:title)
-        assert_equal "The September Issue", @result[:title]
+        assert @result.first.has_key?(:title)
+        assert_equal "The September Issue", @result.first[:title]
       end
     
       should "return an the correct imdb id" do
-        assert @result.has_key?(:imdb_id)
-        assert_equal "tt1331025", @result[:imdb_id]
+        assert @result.first.has_key?(:imdb_id)
+        assert_equal "tt1331025", @result.first[:imdb_id]
       end
     end
     
