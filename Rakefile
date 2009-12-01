@@ -4,16 +4,18 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "imdb_og"
-    gem.summary = %Q{Simple library to look up movies on IMDB}
+    gem.name = "derobo-imdb_og"
+    gem.summary = %Q{Fork of Jon Maddox's simple library to look up movies on IMDB}
     gem.description = %Q{Simple library to look up movies on IMDB}
-    gem.email = "jon@mustacheinc.com"
-    gem.homepage = "http://github.com/maddox/imdb"
-    gem.authors = ["Jon Maddox"]
-    gem.add_development_dependency "thoughtbot-shoulda"
+    gem.email = "rodarmy@gmail.com"
+    gem.homepage = "http://github.com/derobo/imdb"
+    gem.authors = ["Robert Mrasek","Jon Maddox"]
+    gem.add_development_dependency "shoulda"
+    gem.add_development_dependency "rcov"
     gem.add_dependency "htmlentities"
     gem.add_dependency "hpricot"
   end
+  Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
