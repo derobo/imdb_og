@@ -6,7 +6,9 @@ class Imdb
   IMDB_GENRE_BASE_URL = "http://www.imdb.com/Sections/Genres/"
   IMDB_SEARCH_BASE_URL = "http://imdb.com/find?s=all&q="
 
-
+  # Returns an Array of Hashes of {:imdb_id => String of imdb-id, :title => String of the title}.
+  #
+  # If use_akas is set alternative titles will be included in the search.
   def self.search_movies_by_title(title, use_akas = nil)
     document = Hpricot(open("#{IMDB_SEARCH_BASE_URL}#{CGI::escape(title)};s=tt#{";site=aka" if use_akas}").read)
     # we got search results
@@ -18,10 +20,13 @@ class Imdb
       end
       results.uniq
     else
-      {:imdb_id => document.search('link[@href^="http://www.imdb.com/title/tt"]').first['href'].match(/tt\d+/).to_s, :title => document.search('meta[@name="title"]').first["content"].gsub(/\(\d\d\d\d\)$/, '').strip}
+      [{:imdb_id => document.search('link[@href^="http://www.imdb.com/title/tt"]').first['href'].match(/tt\d+/).to_s, :title => document.search('meta[@name="title"]').first["content"].gsub(/\(\d\d\d\d\)$/, '').strip}]
     end
   end
   
+  # Returns an ImdbMovie.
+  #
+  # If fetch_releasesinfos is set alternative titles and the full releases dates will be fetched.
   def self.find_movie_by_id(id, fetch_releaseinfos = false)
     coder = HTMLEntities.new
 

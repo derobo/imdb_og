@@ -1,0 +1,53 @@
+= derobo-imdb_og
+
+This is a fork of Jon Maddox's gem imdb_og (http://github.com/maddox/imdb)
+
+== DESCRIPTION:
+
+A simple ruby library to scrape IMDB.
+* http://github.com/derobo/imdb
+
+== FEATURES :
+
+* Searching imdb for movies based on title
+* Getting a Movie object based on it's imdb id
+* Most information on imdb gets scraped, like title, poster, rating, alternative titles etc
+
+== SYNOPSIS:
+
+You should use following code to include this gem into your project. This prevents namespace issus.
+
+	require 'rubygems'
+	begin
+  		gem "derobo-imdb_og"
+  		require "imdb"
+	rescue Gem::LoadError
+  		# handle the error somehow
+	end
+
+To search for a movie(including alternative titles):
+
+	m = Imdb.search_movies_by_title("Ein Fisch namens Wanda", true)  
+	m.first[:title]
+	#=> "A Fish Called Wanda"
+	m.first[:imdb_id]
+	#=> "tt0095159"
+
+To get a movie by it's imdb-id: 
+
+	m = Imdb.find_movie_by_id("tt095159")
+	m.title	
+	#=> "A Fish Called Wanda"
+
+== REQUIREMENTS:
+Following gems are needed:
+* Hpricot
+* htmlentities
+
+== INSTALL:
+Install and activated the gemcutter gem if needed
+	$ gem install gemcutter
+	$ gem tumble
+
+To install the gem itself run
+	$ gem install derobo-imdb_og
