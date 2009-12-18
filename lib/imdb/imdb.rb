@@ -51,6 +51,8 @@ class Imdb
       case info_title
       when /Directors?:/
         movie.directors = parse_names(info)
+      when /Awards?:/
+        movie.awards = parse_info(info)
       when /Writers?[^:]+:/
         movie.writers = parse_names(info)
       when /Company:/
@@ -127,11 +129,11 @@ class Imdb
   end
   
   def self.parse_info(info)
-    value = info.inner_text.gsub(/\n/,'') 
+    value = info.inner_text.gsub(/\n/,' ')
     if value =~ /\:(.+)/ 
       value = $1
     end
-    value.gsub(/ more$/, '')
+    value.strip.gsub(/ more$/, '').gsub(/\s\s/, ' ')
   end
   
   def self.parse_names(info)

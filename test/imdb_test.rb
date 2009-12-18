@@ -141,7 +141,11 @@ class ImdbTest < Test::Unit::TestCase
       should "have a tagline" do
         assert_equal 'Dinner is served... Summer 2007', @movie.tagline
       end
-          
+
+      should "have awards" do
+        assert_equal 'Won Oscar. Another 43 wins & 20 nominations', @movie.awards
+      end
+
       should "have a rating" do
         assert_match /\d.\d/, @movie.rating
       end
