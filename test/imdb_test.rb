@@ -84,7 +84,7 @@ class ImdbTest < Test::Unit::TestCase
       end
     
       should "have a release date" do
-        # Fails for my, because imdb.com serves my the german release date (my ip should be the reason)
+        # Fails for me, because imdb.com serves me the german release date (my ip should be the reason)
         # assert_equal Date.new(2007, 06, 29), @movie.release_date
         assert_equal Date.new(2007, 10, 3), @movie.release_date
       end
