@@ -42,11 +42,8 @@ class Imdb
       movie.rating = $1
     end
 
-    begin
-      movie.poster_url = data.at("div.photo/a[@name='poster']/img")['src']
-    rescue
-      movie.poster_url = nil
-    end
+    poster_url = data.at("div.photo/a[@name='poster']/img")
+    movie.poster_url = poster_url['src'] unless poster_url.nil?
 
     infos = (data/"div.info")
     infos.each do |info|
