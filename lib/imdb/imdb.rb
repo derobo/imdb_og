@@ -111,6 +111,7 @@ class Imdb
     coder = HTMLEntities.new
     data = Hpricot(open(IMDB_MOVIE_BASE_URL + id + '/releaseinfo'))
     infos = data/"div#tn15content/table"
+		return nil unless infos.size > 2
     
     dates = (infos.first/'tr').map do |e| e.inner_text.squeeze(' ').gsub("\n \n", "\n").strip.split("\n ") end.compact.reject{|a| true if a.size != 2}
     

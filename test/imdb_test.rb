@@ -192,9 +192,17 @@ class ImdbTest < Test::Unit::TestCase
         assert_equal 'Ratatouille', @movie.releases['Taiwan'][:title]
         assert_equal Date.new(2007, 10, 19), @movie.releases['Poland'][:date]
         assert_equal 'Ratatuj', @movie.releases['Poland'][:title]
-      end
+      end		
     end
-    
+		context "after an Imdb.find_by_id with no further release dates " do
+			setup do
+				@movie = Imdb.find_movie_by_id("tt0349773", true)
+			end
+			
+			should "have no furter releases" do
+				assert_equal 0, @movie.releases.size
+			end
+		end
+
   end
-  
 end
