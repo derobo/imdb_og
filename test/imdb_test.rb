@@ -176,6 +176,10 @@ class ImdbTest < Test::Unit::TestCase
         @movie.genres = nil
         assert_equal [], @movie.genres
       end
+      
+      should "have a release year" do
+        assert_equal 2007, @movie.release_year
+      end
     end
     context "after an Imdb.find_by_id with release fetching returns it" do 
       setup do

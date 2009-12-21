@@ -36,6 +36,7 @@ class Imdb
     
     movie.imdb_id = id
     movie.title = coder.decode(data.at("meta[@name='title']")['content'].gsub(/\((\d{4}(\/[^)]*)?|[A-Z]+)\)/,'').strip)
+    movie.release_year = data.at("div[@id=tn15title]").at("a").innerText.to_i
 
     rating_text = (data/"div.rating/div.meta/b").inner_text
     if rating_text =~ /([\d\.]+)\/10/
