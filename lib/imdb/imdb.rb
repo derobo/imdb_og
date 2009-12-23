@@ -84,6 +84,12 @@ class Imdb
         rescue
           movie.release_date = nil
         end
+      when "Also Known As:"
+        # work in most cases, but see tt0224578 or tt0211915
+        # should we make that an array ?
+        movie.aka = coder.decode(parse_info(info)).gsub(/\s\(.*$/, '')
+      when "Language:"
+        movie.languages = parse_info(info).split(' | ')
       when "Certification:"
         begin
           movie.certification = (info/"a").map { |v| v.inner_html }.select { |v| v =~ /^USA:/ && v !~ /Unrated/ }.map { |v| v[/^USA:/]=''; v.strip }.first
