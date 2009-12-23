@@ -1,5 +1,5 @@
 class ImdbMovie
-  attr_accessor :imdb_id, :color, :title, :directors, :writers, :releases, :release_year, :tagline, :company, :plot, :runtime, :rating, :poster_url, :release_date, :certification, :genres, :actors, :awards
+  attr_accessor :imdb_id, :color, :title, :directors, :writers, :releases, :release_year, :tagline, :company, :plot, :runtime, :rating, :poster_url, :release_date, :certification, :genres, :actors, :awards, :aka
 
   def writers
      self.instance_variable_get(:@writers) || []

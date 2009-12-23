@@ -102,6 +102,10 @@ class ImdbTest < Test::Unit::TestCase
         assert_equal "Color", @movie.color
       end
           
+      should "have a also known as (aka)" do
+        assert_equal "Untitled Rodent Project (USA) (working title)", @movie.aka
+      end
+
       should "have two directors" do
         assert_equal 2, @movie.directors.length
         assert_equal 'nm0083348', @movie.directors[0].imdb_id
