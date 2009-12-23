@@ -4,7 +4,9 @@ puts "*********************"
 puts "Find movie by IMDB ID"
 puts "*********************"
 
-m = Imdb.find_movie_by_id("tt0211915")
+m = Imdb.find_movie_by_id("tt0382932", true)
+
+pp m.languages
 
 puts "*** IMDB ID ***"
 pp m.imdb_id
@@ -38,10 +40,10 @@ puts "*** Certification ***"
 pp m.certification
 puts "*** Actors ***"
 pp m.actors
-puts "*** Also Known As ***"
-pp m.aka
 puts "*** Languages ***"
 pp m.languages
+puts "*** Releases ***"
+pp m.releases
 
 puts "***********************"
 puts "Search movie with title"
@@ -50,5 +52,3 @@ puts "***********************"
 m = Imdb.search_movies_by_title("Hero")
 
 pp m
-
-
