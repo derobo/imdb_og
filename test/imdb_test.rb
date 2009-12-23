@@ -97,6 +97,10 @@ class ImdbTest < Test::Unit::TestCase
         assert_equal 'co0017902', @movie.company.imdb_id
         assert_equal 'Pixar Animation Studios', @movie.company.name
       end
+      
+      should "have a color" do
+        assert_equal "Color", @movie.color
+      end
           
       should "have two directors" do
         assert_equal 2, @movie.directors.length

@@ -54,6 +54,8 @@ class Imdb
         movie.directors = parse_names(info)
       when /Awards?:/
         movie.awards = parse_info(info)
+      when /Color?:/
+        movie.color = parse_info(info)
       when /Writers?[^:]+:/
         movie.writers = parse_names(info)
       when /Company:/
