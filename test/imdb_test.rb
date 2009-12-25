@@ -145,7 +145,13 @@ class ImdbTest < Test::Unit::TestCase
         assert_equal 'Comedy', @movie.genres[1].name
         assert_equal 'Family', @movie.genres[2].name
       end
-          
+
+      should "have two languages" do
+        assert_equal 2, @movie.languages.length
+        assert_equal 'English', @movie.languages[0]
+        assert_equal 'French', @movie.languages[1]
+      end
+
       should "have a tagline" do
         assert_equal 'Dinner is served... Summer 2007', @movie.tagline
       end
